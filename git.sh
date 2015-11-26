@@ -27,7 +27,7 @@ function b_commit() {
     fi
 
     git add . && git commit -m "$MESSAGE"
-    echo "command executed - git add . && git commit -m \"$MESSAGE\"";
+    echo "command executed - git add . && git commit -m \"$MESSAGE\""; 
 }
 
 ## pull branch
