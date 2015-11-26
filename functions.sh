@@ -9,7 +9,7 @@ function b_help() {
     echo "billy find {string} - search for directory the in current directory"
 }
 
-function b_updateTerminal() {
+function b_fresh() {
     source ~/terminal-ext/billy.sh
 }
 
@@ -27,12 +27,12 @@ function b_host() {
     php -S localhost:$1 -t $2
 }
 
-## Tail a file
+## Tail the end of a file
 function b_tail() {
     tail -f $1;
 }
 
-## find folder
+## find a folder with the name of
 function b_find() {
     echo 'You searched for:' $1
     ls -d *$1*;

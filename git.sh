@@ -111,6 +111,12 @@ function b_create() {
 
 ## create a new branch and check it out
 function b_diff() {
+    git diff
+    echo "command executed - git diff";
+}
+
+## create a new branch and check it out
+function b_status() {
     git status
     echo "command executed - git status";
 }

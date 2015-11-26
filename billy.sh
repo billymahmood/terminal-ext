@@ -3,10 +3,14 @@
 function b() {
     if ! fn_exists "b_$1"; 
         then
-            echo "billy does not except $1 as a pram"
+            echo "billy does not except $1 as a parameter!"
         else 
             "b_$1" "${@:2}"
     fi
+}
+
+function billy() {
+    b "${@:0}"
 }
 
 ## check if a function exists
