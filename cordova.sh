@@ -1,23 +1,19 @@
-function bcrun() {
-    cordova run $1
+function b_run() {
+    if [ -z "$1" ];
+        then
+            PLATFORM="android"
+        else
+            PLATFORM=$1
+    fi
+    cordova run $PLATFORM
 }
 
-function bcandroid() {
-    cordova run android
-}
-
-function bcios() {
-    cordova run ios
-}
-
-function bcbuild() {
-    cordova run $1
-}
-
-function bcbuildandroid() {
-    cordova run android
-}
-
-function bcbuildios() {
-    cordova run ios
+function b_build() {
+    if [ -z "$1" ];
+        then
+            PLATFORM="android"
+        else
+            PLATFORM=$1
+    fi
+    cordova build $PLATFORM
 }

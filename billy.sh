@@ -1,10 +1,10 @@
 #!/bin/bash
-## The roof of everything
+## The root of everything, just like an index file in a php project
 function b() {
     if ! fn_exists "b_$1"; 
         then
             echo "billy does not except $1 as a pram"
-        else
+        else 
             "b_$1" "${@:2}"
     fi
 }
@@ -16,7 +16,7 @@ fn_exists() {
 }
 
 
-## Servers
+## Pull in all the required files that contain our code
 source ~/terminal-ext/server.sh
 source ~/terminal-ext/grunt.sh
 source ~/terminal-ext/cordova.sh

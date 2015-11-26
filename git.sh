@@ -3,23 +3,50 @@
 ##  Author: Balal Butt (Billy Mahmood)
 ##  Email: billy124@msn.com
 ##  Please do not remove this header
+##  We are using the b_ prefix to prevent our custom functions from overwriting existing functions
 ## 
 
 ## get the current Branch name with (branch name)
+## this function cannot be invoked by b
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 ## Get the branch name
+## this function cannot be invoked by b
 get_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 }
 
-## Add all changes and commit all changes
+## Add all changes and commit
+function b_add() {
+    if [ -z "$1" ];
+        then
+            echo "$USER, please enter which files you want to add"
+        else
+            git add "${@:2}"
+            echo "command executed - git add ${@:0}";
+    fi
+}
+
+## commit changes
 function b_commit() {
     if [ -z "$1" ];
         then
-            echo "";
+            echo -n "$USER, please enter a commit message : "
+            read MESSAGE
+        else
+            MESSAGE=$1
+    fi
+
+    git commit -m "$MESSAGE"
+    echo "command executed - git commit -m \"$MESSAGE\""; 
+}
+
+## Add all changes and commit
+function b_acommit() {
+    if [ -z "$1" ];
+        then
             echo -n "$USER, please enter a commit message : "
             read MESSAGE
         else
