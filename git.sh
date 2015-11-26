@@ -23,7 +23,7 @@ function b_commit() {
             echo -n "$USER, please enter a commit message : "
             read MESSAGE
         else
-            MESSAGE = $1
+            MESSAGE=$1
     fi
 
     git add . && git commit -m "$MESSAGE"
