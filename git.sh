@@ -20,14 +20,14 @@ function b_commit() {
     if [ -z "$1" ];
         then
             echo "";
-            echo -n "$USER! pass a commit message."
+            echo -n "$USER, please enter a commit message : "
             read MESSAGE
-            git add . && git commit -m "$MESSAGE"
-            echo "command executed - git add . && git commit -m \"$MESSAGE\"";
         else
-            git add . && git commit -m "$1"
-            echo "command executed - git add . && git commit -m \"$1\"";
+            MESSAGE = $1
     fi
+
+    git add . && git commit -m "$MESSAGE"
+    echo "command executed - git add . && git commit -m \"$MESSAGE\"";
 }
 
 ## pull branch
