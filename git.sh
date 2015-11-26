@@ -19,7 +19,11 @@ get_git_branch() {
 function b_commit() {
     if [ -z "$1" ];
         then
-            echo "Billy! pass a commit message.";
+            echo "";
+            echo -n "$USER! pass a commit message."
+            read MESSAGE
+            git add . && git commit -m "$MESSAGE"
+            echo "command executed - git add . && git commit -m \"$MESSAGE\"";
         else
             git add . && git commit -m "$1"
             echo "command executed - git add . && git commit -m \"$1\"";
