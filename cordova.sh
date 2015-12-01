@@ -1,11 +1,26 @@
-function b_run() {
-    if [ -z "$1" ];
+## Get the platform name
+## this function cannot be invoked by b
+function getPlatform() {
+    COMMAND="cordova"
+
+    if [ -f $(PWD)/ionic.project ]; 
         then
-            PLATFORM="android"
-        else
+            COMMAND="ionic"
+    fi
+    
+    echo $COMMAND
+}
+
+function b_run() {
+    PLATFORM="android"
+
+    if [ ! -z "$1" ];
+        then
             PLATFORM=$1
     fi
-    cordova run $PLATFORM
+
+    $(getPlatform) run $PLATFORM
+    echo "command executed - $(getPlatform) run $PLATFORM"   
 }
 
 function b_build() {
@@ -15,5 +30,7 @@ function b_build() {
         else
             PLATFORM=$1
     fi
-    cordova build $PLATFORM
+
+    $(getPlatform) build $PLATFORM
+    echo "command executed - $(getPlatform) build $PLATFORM"    
 }
