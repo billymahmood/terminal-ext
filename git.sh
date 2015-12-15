@@ -125,3 +125,13 @@ function b_showChangesInCommit() {
     git show --name-only $1
     echo "command executed - git show --name-only $1";
 }
+
+function b_remote() {
+    git remote -v
+    echo "command executed - git remote -v";
+}
+
+function b_changeRemote() {
+    git remote set-url origin $1
+    echo "command executed - git remote set-url origin $1";
+}
