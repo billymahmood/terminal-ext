@@ -19,6 +19,8 @@ fn_exists() {
     [ `type -t $1`"" == 'function' ]
 }
 
+## PS1
+export PS1="\u@\$(PWD)\[\033[32m\]\$(parse_git_branch)\[\033[00m\]$ "
 
 ## Pull in all the required files that contain our code
 source ~/terminal-ext/server.sh
