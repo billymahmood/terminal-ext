@@ -5,13 +5,13 @@ function getPlatform() {
 
     if [ -f $(PWD)/ionic.project ]
         then
-            COMMAND="ionic serve"
+            COMMAND="ionic"
     elif [ -f $(PWD)/artisan ]
         then
-            COMMAND="php artisan serve"
+            COMMAND="php artisan"
     elif [ -f $(PWD)/Gruntfile.js ]
         then
-            COMMAND="grunt serve"            
+            COMMAND="grunt"
     fi
     
     echo $COMMAND
@@ -25,7 +25,7 @@ function b_run() {
             PLATFORM=$1
     fi
 
-    $(getPlatform) run $PLATFORM
+    $(getPlatform) run $PLATFORM --device
     echo "command executed - $(getPlatform) run $PLATFORM"   
 }
 
@@ -42,6 +42,6 @@ function b_build() {
 }
 
 function b_serve() {
-    $(getPlatform) 
+    $(getPlatform) serve
     echo "command executed - $(getPlatform)"   
 }
