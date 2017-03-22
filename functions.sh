@@ -1,12 +1,11 @@
 #!/bin/bash
 function b_help() {
     clear;
-    echo "billy start - go to /Users/$USER/Sites";
-    echo "billy errors - tail apache error log (/var/log/apache2/error_log)";
-    echo "billy host - port to start php server on a port";
-    echo "billy tail {path} - to tail any file";
-
-    echo "billy find {string} - search for directory the in current directory"
+    echo "b start - go to /Users/$USER/Sites";
+    echo "b errors - tail apache error log (/var/log/apache2/error_log)";
+    echo "b host - port to start php server on a port";
+    echo "b tail {path} - to tail any file";
+    echo "b find {string} - search for directory the in current directory"
 }
 
 function b_fresh() {
@@ -36,4 +35,17 @@ function b_tail() {
 function b_find() {
     echo 'You searched for:' $1
     ls -d *$1*;
+}
+
+function b_setup() {
+  echo -n "Do you want to create a new directory? (y/n)? "
+  read answer
+  if echo "$answer" | grep -iq "^y" ;then
+      echo -n "Please enter the directory name: $"
+        read directory
+        mkdir "$directory"
+        cd "$directory"
+  else
+      echo No
+  fi
 }
