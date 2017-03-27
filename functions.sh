@@ -33,19 +33,38 @@ function b_tail() {
 
 ## find a folder with the name of
 function b_find() {
-    echo 'You searched for:' $1
+    echo 'You searched for: ' $1
     ls -d *$1*;
 }
 
 function b_setup() {
-  echo -n "Do you want to create a new directory? (y/n)? "
+  ## Do we need a new folder for your projet
+  echo -n "Do you want to create a new directory for your project? (y/n)? "
   read answer
   if echo "$answer" | grep -iq "^y" ;then
-      echo -n "Please enter the directory name: $"
+      echo -n "Please enter the directory name: $ "
         read directory
         mkdir "$directory"
         cd "$directory"
-  else
-      echo No
   fi
+
+  ## Lets download the git code
+  echo -n "Please enter the Git repo url: $ "
+  read repo
+  git clone "$repo" && cd `echo $_ | sed -n -e 's/^.*\/\([^.]*\)\(.git\)*/\1/p'`
+
+  ## copy the .env.example to .env
+  echo -n "Do you want to copy the .env.example to .env (y/n)? "
+  read answer
+  if echo "$answer" | grep -iq "^y" ;then
+      cp .env.example .env
+  fi
+
+  ## Install composer
+  echo -n "Do you want to install composer packages (y/n)? "
+  read answer
+  if echo "$answer" | grep -iq "^y" ;then
+      composer install
+  fi
+
 }
