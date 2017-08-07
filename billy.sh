@@ -28,3 +28,4 @@ source ~/terminal-ext/grunt.sh
 source ~/terminal-ext/cordova.sh
 source ~/terminal-ext/functions.sh
 source ~/terminal-ext/git.sh
+source ~/terminal-ext/docker.sh
