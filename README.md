@@ -56,23 +56,28 @@ Here is a complete list of all available commands, grouped by category.
 | **`b_docker_prune`** | Standard cleanup (removes stopped containers, dangling images, etc.). | `b_docker_prune` |
 | **`b_docker_prune_all`** | ⚠️ **Aggressive cleanup.** Removes all unused Docker data. Asks for confirmation. | `b_docker_prune_all` |
 
-### Flutter Commands (`b_flutter_`)
+### Flutter Commands (`b_f_`)
 
 | Command | Description | Example Usage |
 | :--- | :--- | :--- |
-| **`b_flutter_get`** | Runs `flutter pub get`. | `b_flutter_get` |
-| **`b_flutter_upgrade`**| Runs `flutter pub upgrade`. | `b_flutter_upgrade` |
-| **`b_flutter_clean`** | Runs `flutter clean`. | `b_flutter_clean` |
-| **`b_flutter_fix`** | Runs `clean` then `get`. Your go-to troubleshooting command. | `b_flutter_fix` |
-| **`b_flutter_gen`** | Runs the `build_runner` code generator. | `b_flutter_gen` |
-| **`b_flutter_analyze`**| Analyzes Dart code for issues. | `b_flutter_analyze` |
-| **`b_flutter_test`** | Runs all project tests. | `b_flutter_test` |
-| **`b_flutter_run`** | Starts the app on your selected device. | `b_flutter_run` |
-| **`b_flutter_build_apk`**| Builds a release APK with `live` flavor. | `b_flutter_build_apk 1.2.3 45` |
-| **`b_flutter_build_aab`**| Builds a release App Bundle with `live` flavor. | `b_flutter_build_aab 1.2.3 45` |
-| **`b_flutter_build_ios`**| Builds a release `.app` for running on a physical device. | `b_flutter_build_ios staging` |
-| **`b_flutter_build_ipa`**| Builds a release `.ipa` archive with `staging` flavor for distribution. | `b_flutter_build_ipa` |
-| **`b_flutter_doctor`** | Checks your Flutter environment health. | `b_flutter_doctor` |
+| **`b f_get`** | Runs `flutter pub get`. | `b f_get` |
+| **`b f_upgrade`**| Runs `flutter pub upgrade`. | `b f_upgrade` |
+| **`b f_clean`** | Runs `flutter clean`. | `b f_clean` |
+| **`b f_fix`** | Runs `clean` then `get`. The go-to troubleshooting command. | `b f_fix` |
+| **`b f_gen`** | Runs the `build_runner` code generator. | `b f_gen` |
+| **`b f_analyze`**| Analyzes Dart code for issues. | `b f_analyze` |
+| **`b f_test`** | Runs all project tests. | `b f_test` |
+| **`b f_test_cov`**| Runs tests and generates a coverage report. | `b f_test_cov` |
+| **`b f_devices`** | Lists all available devices and emulators. | `b f_devices` |
+| **`b f_run`** | Starts the app on your selected device. | `b f_run` |
+| **`b f_run_d`** | Runs the app on a specific device by its ID. | `b f_run_d emulator-5554` |
+| **`b f_build_apk`**| Builds a release APK with `live` flavor. | `b f_build_apk 1.2.3 45` |
+| **`b f_build_aab`**| Builds a release App Bundle with `live` flavor. | `b f_build_aab 1.2.3 45` |
+| **`b f_build_ios`**| Builds a release `.app` for running on a physical device. | `b f_build_ios staging` |
+| **`b f_build_ipa`**| Builds a release `.ipa` archive with `staging` flavor. | `b f_build_ipa` |
+| **`b f_devtools`** | Opens Flutter DevTools in the browser. | `b f_devtools` |
+| **`b f_doctor`** | Checks your Flutter environment health. | `b f_doctor` |
+| **`b f_sdk_upgrade`**| Upgrades the Flutter SDK to the latest version. | `b f_sdk_upgrade` |
 
 ### General Terminal Commands (`b_`)
 

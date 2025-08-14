@@ -1,8 +1,7 @@
 #!/bin/zsh
 ##
-##  This is a custom Flutter helper functions file for Zsh.
-##  Inspired by a request from SuperHumanRoid.
-##  Prefix: b_flutter_
+##  Custom Flutter helper functions for Zsh.
+##  Prefix: b_f_
 ##
 
 # -----------------------------------------------------------------------------
@@ -10,79 +9,98 @@
 # -----------------------------------------------------------------------------
 
 ## 📦 Get all dependencies listed in pubspec.yaml.
-## Usage: b_flutter_get
-b_flutter_get() {
+b_f_get() {
   echo "📦 Getting Flutter dependencies..."
   flutter pub get
 }
 
 ## 🚀 Upgrade all dependencies to their latest compatible versions.
-## Usage: b_flutter_upgrade
-b_flutter_upgrade() {
+b_f_upgrade() {
   echo "🚀 Upgrading Flutter dependencies..."
   flutter pub upgrade
 }
 
 ## 🧼 Clean the Flutter build cache.
-## Fixes many "weird" build issues.
-## Usage: b_flutter_clean
-b_flutter_clean() {
+b_f_clean() {
   echo "🧼 Cleaning Flutter project..."
   flutter clean
 }
 
 ## 🩹 Clean the project and then get dependencies.
-## The "go-to" command when your project is acting up.
-## Usage: b_flutter_fix
-b_flutter_fix() {
-  b_flutter_clean && b_flutter_get
+b_f_fix() {
+  b_f_clean && b_f_get
 }
 
 # -----------------------------------------------------------------------------
 # -- Code Generation & Analysis
 # -----------------------------------------------------------------------------
 
-## ⚙️ Run build_runner to generate files (for Freezed, Riverpod, etc.).
-## Includes `--delete-conflicting-outputs`.
-## Usage: b_flutter_gen
-b_flutter_gen() {
+## ⚙️ Run build_runner to generate files.
+b_f_gen() {
   echo "⚙️  Generating code with build_runner..."
   flutter pub run build_runner build --delete-conflicting-outputs
 }
 
-## 🔬 Analyze the project's Dart code for errors and warnings.
-## Usage: b_flutter_analyze
-b_flutter_analyze() {
+## 🔬 Analyze the project's Dart code.
+b_f_analyze() {
   echo "🔬 Analyzing Dart code..."
   flutter analyze
 }
 
 ## ✅ Run all tests in the project.
-## You can pass specific file paths as arguments.
-## Usage: b_flutter_test [path/to/test_file.dart]
-b_flutter_test() {
+b_f_test() {
   echo "✅ Running Flutter tests..."
   flutter test "$@"
 }
 
+## --- NEW ---
+## 📊 Run tests and generate a code coverage report.
+b_f_test_cov() {
+    echo "📊 Running tests with coverage..."
+    flutter test --coverage
+    # Check if lcov is installed for generating the report
+    if command -v lcov &> /dev/null && [ -d "coverage" ]; then
+        echo "✨ Generating HTML coverage report..."
+        # Note: genhtml may not be available on all systems with lcov
+        genhtml coverage/lcov.info -o coverage/html
+        echo "✅ Report available at coverage/html/index.html"
+    fi
+}
 
 # -----------------------------------------------------------------------------
 # -- Building & Running
 # -----------------------------------------------------------------------------
 
+## --- NEW ---
+## 📱 List all available devices and emulators.
+b_f_devices() {
+    echo "📱 Listing available devices..."
+    flutter devices
+}
+
 ## ▶️  Run the app on the default device.
-## Usage: b_flutter_run
-b_flutter_run() {
+b_f_run() {
     echo "▶️  Starting Flutter app..."
     flutter run
 }
 
-## 📱 Build a release APK for Android with specific build info and flavor.
-## Usage: b_flutter_build_apk <build_name> <build_number>
-b_flutter_build_apk() {
+## --- NEW ---
+## 🎯 Run the app on a specific device by ID.
+b_f_run_d() {
+    if (( $# == 0 )); then
+        echo "Error: Please provide a device ID." >&2
+        echo "Run 'b f_devices' to see a list of available IDs." >&2
+        return 1
+    fi
+    echo "🎯 Starting Flutter app on device '$1'..."
+    flutter run -d "$1"
+}
+
+## 📱 Build a release APK for Android.
+b_f_build_apk() {
   if (( $# < 2 )); then
     echo "Error: Please provide a <build_name> and <build_number>." >&2
-    echo "Usage: b_flutter_build_apk 4.1.96 4196" >&2
+    echo "Usage: b f_build_apk 4.1.96 4196" >&2
     return 1
   fi
   echo "📱 Building LIVE release APK -- v$1 ($2)..."
@@ -90,12 +108,11 @@ b_flutter_build_apk() {
   echo "✅ APK available in build/app/outputs/flutter-apk/"
 }
 
-## 📦 Build a release App Bundle for Android with specific build info and flavor.
-## Usage: b_flutter_build_aab <build_name> <build_number>
-b_flutter_build_aab() {
+## 📦 Build a release App Bundle for Android.
+b_f_build_aab() {
   if (( $# < 2 )); then
     echo "Error: Please provide a <build_name> and <build_number>." >&2
-    echo "Usage: b_flutter_build_aab 4.1.96 4196" >&2
+    echo "Usage: b f_build_aab 4.1.96 4196" >&2
     return 1
   fi
   echo "📦 Building LIVE release App Bundle -- v$1 ($2)..."
@@ -104,13 +121,10 @@ b_flutter_build_aab() {
 }
 
 ## 🍏 Build a release .app for iOS with a specific flavor.
-## For running on a physical device via Xcode.
-## --- NEWLY ADDED ---
-## Usage: b_flutter_build_ios <flavor>
-b_flutter_build_ios() {
+b_f_build_ios() {
   if (( $# == 0 )); then
     echo "Error: Please provide a flavor (e.g., staging, live)." >&2
-    echo "Usage: b_flutter_build_ios staging" >&2
+    echo "Usage: b f_build_ios staging" >&2
     return 1
   fi
   local flavor="$1"
@@ -119,24 +133,36 @@ b_flutter_build_ios() {
   echo "✅ iOS .app available in build/ios/iphoneos/"
 }
 
-
-## 🍏 Build a release IPA for iOS with a staging flavor.
-## For TestFlight/App Store distribution.
-## Usage: b_flutter_build_ipa
-b_flutter_build_ipa() {
+## 🍏 Build a release IPA for iOS.
+b_f_build_ipa() {
   echo "🍏 Building STAGING release IPA for iOS..."
   flutter build ipa --release --dart-define=CONFIG_FLAVOR=staging
   echo "✅ IPA available in build/ios/archive/"
 }
 
+# -----------------------------------------------------------------------------
+# -- Development Tools & System
+# -----------------------------------------------------------------------------
 
-# -----------------------------------------------------------------------------
-# -- System Diagnostics
-# -----------------------------------------------------------------------------
+## --- NEW ---
+## 🛠️ Open Flutter DevTools in your default browser.
+## Assumes the default port is running.
+b_f_devtools() {
+    local devtools_url="http://127.0.0.1:9100"
+    echo "🛠️ Opening Flutter DevTools at $devtools_url..."
+    # 'open' is for macOS, 'xdg-open' is for Linux
+    open "$devtools_url" 2>/dev/null || xdg-open "$devtools_url" 2>/dev/null
+}
 
 ## 🩺 Check the Flutter environment and see if anything is missing.
-## Usage: b_flutter_doctor
-b_flutter_doctor() {
+b_f_doctor() {
   echo "🩺 Running Flutter Doctor..."
   flutter doctor
+}
+
+## --- NEW ---
+## 🔼 Upgrade the Flutter SDK to the latest version.
+b_f_sdk_upgrade() {
+    echo "🔼 Upgrading Flutter SDK..."
+    flutter upgrade
 }
