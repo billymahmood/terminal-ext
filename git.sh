@@ -1,10 +1,6 @@
 #!/bin/zsh
 ##
-##  This is a custom git functions file
-##  Author: Balal Butt (Billy Mahmood)
-##  Email: billy124@msn.com
-##  Please do not remove this header
-##  We are using the b_ prefix to prevent our custom functions from overwriting existing functions
+## Custom Git Functions (More Robust Version)
 ##
 
 # A helper function to get the current branch name.
@@ -12,64 +8,55 @@ _b_get_current_branch() {
   git branch --show-current 2>/dev/null
 }
 
-# A helper function to get a commit message, prompting if one isn't provided.
-# This avoids code duplication in b_commit and b_acommit.
-_b_get_commit_message() {
-  local commit_msg="$*"
-  if [[ -z "$commit_msg" ]]; then
-    # Zsh-idiomatic way to prompt for input
-    read "commit_msg?$USER, please enter a commit message: "
-  fi
-
-  if [[ -z "$commit_msg" ]]; then
-    echo "Commit cancelled: No message provided." >&2
-    return 1 # Failure
-  fi
-
-  echo "$commit_msg"
-  return 0 # Success
-}
-
-# --- Main Functions ---
-
 ## Add specified files to staging.
-## Usage: b add <file1> <file2> ...
 b_add() {
   if (( $# == 0 )); then
     echo "Error: Please specify which files to add." >&2
     return 1
   fi
-  git add "$@"
+  # Use -A to ensure new files and deletions are staged.
+  git add -A "$@"
   echo "✅ Added: $@"
 }
 
-## Commit staged changes with a message.
-## Usage: b commit <message>
-b_commit() {
-  local MESSAGE
-  MESSAGE=$(_b_get_commit_message "$@")
-  # Check the return code of the helper function
-  if (( $? != 0 )); then
+## A helper function to get a commit message, prompting if one isn't provided.
+_b_get_commit_message() {
+  local commit_msg="$*"
+  if [[ -z "$commit_msg" ]]; then
+    read "commit_msg?$USER, please enter a commit message: "
+  fi
+
+  if [[ -z "$commit_msg" ]]; then
+    echo "Commit cancelled: No message provided." >&2
     return 1
   fi
 
+  echo "$commit_msg"
+  return 0
+}
+
+## Commit staged changes with a message.
+b_commit() {
+  local MESSAGE
+  MESSAGE=$(_b_get_commit_message "$@")
+  if (( $? != 0 )); then
+    return 1
+  fi
   git commit -m "$MESSAGE"
 }
 
 ## Add all tracked files and commit with a message.
-## Usage: b acommit <message>
 b_acommit() {
   local MESSAGE
   MESSAGE=$(_b_get_commit_message "$@")
   if (( $? != 0 )); then
     return 1
   fi
-
-  git add . && git commit -m "$MESSAGE"
+  # Use -A to stage all changes, including new and deleted files.
+  git add -A . && git commit -m "$MESSAGE"
 }
 
 ## Pull changes from a remote branch.
-## Usage: b pull [remote] [branch]
 b_pull() {
   local remote="${1:-origin}"
   local branch="${2:-$(_b_get_current_branch)}"
@@ -80,8 +67,7 @@ b_pull() {
   git pull "$remote" "$branch"
 }
 
-## Push changes to a remote branch.
-## Usage: b push [remote] [branch]
+## Push changes to a remote branch, setting the upstream if it's not set.
 b_push() {
   local remote="${1:-origin}"
   local branch="${2:-$(_b_get_current_branch)}"
@@ -89,43 +75,38 @@ b_push() {
     echo "Error: Could not determine current branch. Please specify one." >&2
     return 1
   fi
-  git push "$remote" "$branch"
+
+  # Check if the upstream branch is set. If not, set it on the first push.
+  if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
+      echo " upstream branch not set. Setting it now..."
+      git push --set-upstream "$remote" "$branch"
+  else
+      git push "$remote" "$branch"
+  fi
 }
 
-# --- NEWLY ADDED ---
-
-## 🚀 Commit staged changes and push to the remote.
-## Usage: b cpush <message>
+## Commit STAGED changes and push to the remote.
 b_cpush() {
     local MESSAGE
     MESSAGE=$(_b_get_commit_message "$@")
     if (( $? != 0 )); then
-        return 1 # Exit if no message was provided
+        return 1
     fi
-
-    # Commit and then push, ensuring commit succeeds before pushing
     git commit -m "$MESSAGE" && b_push
 }
 
-## 🚀 Add all files, commit, and push in one command.
-## The ultimate shortcut.
-## Usage: b acp <message>
+## Add ALL files, commit, and push in one command.
 b_acp() {
     local MESSAGE
     MESSAGE=$(_b_get_commit_message "$@")
     if (( $? != 0 )); then
         return 1
     fi
-
-    # Add all, commit, and then push
-    git add . && git commit -m "$MESSAGE" && b_push
+    # Use -A to stage all changes, including new and deleted files.
+    git add -A . && git commit -m "$MESSAGE" && b_push
 }
 
-
-# --- Branching ---
-
-## Switch to a different branch. (Uses modern `git switch`)
-## Usage: b switch <branch>
+## Switch to a different branch.
 b_switch() {
   if (( $# == 0 )); then
     echo "Error: Please specify a branch to switch to." >&2
@@ -135,7 +116,6 @@ b_switch() {
 }
 
 ## Create and switch to a new branch.
-## Usage: b new_branch <new-branch-name>
 b_new_branch() {
     if (( $# == 0 )); then
         echo "Error: Please specify a name for the new branch." >&2
