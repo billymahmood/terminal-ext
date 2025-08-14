@@ -44,3 +44,5 @@ source ~/terminal-ext/flutter.sh
 source ~/terminal-ext/git.sh
 source ~/terminal-ext/docker.sh
 source ~/terminal-ext/server.sh
+source ~/terminal-ext/python.sh
+source ~/terminal-ext/mysql.sh

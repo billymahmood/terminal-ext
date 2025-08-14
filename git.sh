@@ -33,7 +33,7 @@ _b_get_commit_message() {
 # --- Main Functions ---
 
 ## Add specified files to staging.
-## Usage: b_add <file1> <file2> ...
+## Usage: b add <file1> <file2> ...
 b_add() {
   if (( $# == 0 )); then
     echo "Error: Please specify which files to add." >&2
@@ -44,7 +44,7 @@ b_add() {
 }
 
 ## Commit staged changes with a message.
-## Usage: b_commit <message>
+## Usage: b commit <message>
 b_commit() {
   local MESSAGE
   MESSAGE=$(_b_get_commit_message "$@")
@@ -57,7 +57,7 @@ b_commit() {
 }
 
 ## Add all tracked files and commit with a message.
-## Usage: b_acommit <message>
+## Usage: b acommit <message>
 b_acommit() {
   local MESSAGE
   MESSAGE=$(_b_get_commit_message "$@")
@@ -69,7 +69,7 @@ b_acommit() {
 }
 
 ## Pull changes from a remote branch.
-## Usage: b_pull [remote] [branch]
+## Usage: b pull [remote] [branch]
 b_pull() {
   local remote="${1:-origin}"
   local branch="${2:-$(_b_get_current_branch)}"
@@ -81,7 +81,7 @@ b_pull() {
 }
 
 ## Push changes to a remote branch.
-## Usage: b_push [remote] [branch]
+## Usage: b push [remote] [branch]
 b_push() {
   local remote="${1:-origin}"
   local branch="${2:-$(_b_get_current_branch)}"
@@ -92,8 +92,40 @@ b_push() {
   git push "$remote" "$branch"
 }
 
+# --- NEWLY ADDED ---
+
+## 🚀 Commit staged changes and push to the remote.
+## Usage: b cpush <message>
+b_cpush() {
+    local MESSAGE
+    MESSAGE=$(_b_get_commit_message "$@")
+    if (( $? != 0 )); then
+        return 1 # Exit if no message was provided
+    fi
+
+    # Commit and then push, ensuring commit succeeds before pushing
+    git commit -m "$MESSAGE" && b_push
+}
+
+## 🚀 Add all files, commit, and push in one command.
+## The ultimate shortcut.
+## Usage: b acp <message>
+b_acp() {
+    local MESSAGE
+    MESSAGE=$(_b_get_commit_message "$@")
+    if (( $? != 0 )); then
+        return 1
+    fi
+
+    # Add all, commit, and then push
+    git add . && git commit -m "$MESSAGE" && b_push
+}
+
+
+# --- Branching ---
+
 ## Switch to a different branch. (Uses modern `git switch`)
-## Usage: b_switch <branch>
+## Usage: b switch <branch>
 b_switch() {
   if (( $# == 0 )); then
     echo "Error: Please specify a branch to switch to." >&2
@@ -103,7 +135,7 @@ b_switch() {
 }
 
 ## Create and switch to a new branch.
-## Usage: b_new_branch <new-branch-name>
+## Usage: b new_branch <new-branch-name>
 b_new_branch() {
     if (( $# == 0 )); then
         echo "Error: Please specify a name for the new branch." >&2

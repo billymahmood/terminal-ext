@@ -25,17 +25,19 @@ To use these functions, it's best to keep them in a separate file for better org
 
 Here is a complete list of all available commands, grouped by category.
 
-### Git Commands (`b_`)
+### Git Command Reference
 
 | Command | Description | Example Usage |
 | :--- | :--- | :--- |
-| **`b_add`** | Adds one or more specified files to staging. | `b_add file1.txt file2.js` |
-| **`b_commit`** | Commits staged changes with a message. Prompts if no message is given. | `b_commit "Update user login logic"` |
-| **`b_acommit`** | Adds all changed files and commits in one step. | `b_acommit "Fix typo in README"` |
-| **`b_pull`** | Pulls changes from a remote branch (defaults to origin/current branch). | `b_pull origin main` |
-| **`b_push`** | Pushes changes to a remote branch (defaults to origin/current branch). | `b_push` |
-| **`b_switch`** | Switches to a different branch using the modern `git switch`. | `b_switch feature/new-design` |
-| **`b_new_branch`**| Creates and switches to a new branch. | `b_new_branch hotfix/login-bug` |
+| **`b add`** | Adds one or more specified files to staging. | `b add file1.txt file2.js` |
+| **`b commit`** | Commits staged changes with a message. | `b commit "Update user login logic"` |
+| **`b acommit`** | Adds all changed files and commits in one step. | `b acommit "Fix typo in README"` |
+| **`b cpush`** | Commits staged changes and pushes to the remote. | `b cpush "Add new user avatar feature"` |
+| **`b acp`** | Adds all changes, commits, and pushes in one command. | `b acp "Hotfix for login button"` |
+| **`b pull`** | Pulls changes from a remote branch. | `b pull origin main` |
+| **`b push`** | Pushes changes to a remote branch. | `b push` |
+| **`b switch`** | Switches to a different branch using `git switch`. | `b switch feature/new-design` |
+| **`b new_branch`**| Creates and switches to a new branch. | `b new_branch hotfix/login-bug` |
 
 ### Docker Commands (`b_docker_`)
 
@@ -89,6 +91,36 @@ Here is a complete list of all available commands, grouped by category.
 | **`b_serve`** | Starts a simple web server in the current directory (requires Python 3). | `b_serve 8080` |
 | **`b_ports`** | Shows all listening network ports and the app using them. | `b_ports` |
 
+### MySQL Command Reference
+
+| Command | Description | Example Usage |
+| :--- | :--- | :--- |
+| **`b mysql_login`** | Logs into the MySQL shell. | `b mysql_login my_user localhost my_db` |
+| **`b mysql_dbs`** | Lists all databases on the server. | `b mysql_dbs` |
+| **`b mysql_users`** | Lists all MySQL users and their hosts. | `b mysql_users` |
+| **`b mysql_procs`** | Shows all currently running MySQL processes. | `b mysql_procs` |
+| **`b mysql_create_db`**| Creates a new database. | `b mysql_create_db new_project_db` |
+| **`b mysql_drop_db`** | ⚠️ **Deletes** a database after confirmation. | `b mysql_drop_db old_project_db` |
+| **`b mysql_dump`** | Exports (backs up) a database to a `.sql` file. | `b mysql_dump my_db ./backup.sql` |
+| **`b mysql_import`** | Imports a `.sql` file into a database. | `b mysql_import my_db ./backup.sql` |
+
+### Python Command Reference
+
+| Command | Description | Example Usage |
+| :--- | :--- | :--- |
+| **`b python_venv_create`**| Creates a standard Python virtual environment in `./venv/`. | `b python_venv_create` |
+| **`b python_venv_on`** | Activates the virtual environment. | `b python_venv_on` |
+| **`b python_venv_off`** | Deactivates the virtual environment. | `b python_venv_off` |
+| **`b python_reqs`** | Installs dependencies from `requirements.txt`. | `b python_reqs` |
+| **`b python_install`** | Installs one or more packages using pip. | `b python_install requests pandas` |
+| **`b python_freeze`** | Saves current dependencies to `requirements.txt`. | `b python_freeze` |
+| **`b python_pip_upgrade`** | Upgrades your `pip` installer to the latest version. | `b python_pip_upgrade` |
+| **`b python_format`** | Automatically formats your code using `isort` and `black`. | `b python_format` |
+| **`b python_lint`** | Lints your code and checks for style errors using `flake8`. | `b python_lint` |
+| **`b python_test`** | Runs your project's tests using `pytest`. | `b python_test` |
+| **`b python_clean`** | Removes Python cache files (`.pyc`, `__pycache__`). | `b python_clean` |
+| **`b python_notebook`** | Starts a Jupyter Notebook server in the current directory. | `b python_notebook` |
+
 ---
 
-> Original Git script header by Balal Butt (Billy Mahmood) - billy124@msn.com
+> Original Git script header by Billy Mahmood
