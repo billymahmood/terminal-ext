@@ -5,6 +5,7 @@ function b() {
         then
             echo "billy does not except $1 as a parameter!"
         else 
+            echo "running b_$1"
             "b_$1" "${@:2}"
     fi
 }
@@ -19,13 +20,12 @@ fn_exists() {
     [ `type -t $1`"" == 'function' ]
 }
 
-## PS1
-export PS1="\u@\$(pwd)\[\033[32m\]\$(parse_git_branch)\[\033[00m\]$ "
+
 
 ## Pull in all the required files that contain our code
-source ~/terminal-ext/server.sh
-source ~/terminal-ext/grunt.sh
-source ~/terminal-ext/cordova.sh
 source ~/terminal-ext/functions.sh
+source ~/terminal-ext/prompt.sh
+source ~/terminal-ext/flutter.sh
 source ~/terminal-ext/git.sh
 source ~/terminal-ext/docker.sh
+source ~/terminal-ext/server.sh
