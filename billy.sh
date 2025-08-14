@@ -1,28 +1,43 @@
-#!/bin/bash
-## The root of everything, just like an index file in a php project
-function b() {
-    if ! fn_exists "b_$1"; 
-        then
-            echo "billy does not except $1 as a parameter!"
-        else 
-            echo "running b_$1"
-            "b_$1" "${@:2}"
+#!/bin/zsh
+##
+## The root of everything, rewritten for Zsh.
+##
+
+## The main dispatcher function. It calls functions prefixed with "b_".
+b() {
+    local func_name="b_$1" # Store the target function name
+    
+    # Check if there's an argument to begin with
+    if (( $# == 0 )); then
+        echo "Usage: b <command> [args...]" >&2
+        return 1
+    fi
+
+    if ! fn_exists "$func_name"; then
+        echo "billy does not accept '$1' as a parameter!" >&2
+        return 1
+    else 
+        # echo "running $func_name" # Optional: uncomment for debugging
+        shift # Removes the first argument (e.g., "add") from the list
+        "$func_name" "$@" # Calls the function (e.g., "b_add") with the remaining arguments
     fi
 }
 
-function billy() {
-    b "${@:0}"
+## A simple alias for the main "b" function.
+billy() {
+    b "$@"
 }
 
-## check if a function exists
+## Check if a function exists (Zsh-idiomatic way).
 fn_exists() {
-    # appended double quote is an ugly trick to make sure we do get a string -- if $1 is not a known command, type does not output anything
-    [ `type -t $1`"" == 'function' ]
+    # [[ ... ]] is more robust than [ ... ]
+    # "$(...)" is the modern way for command substitution
+    [[ "$(type -t "$1")" == "function" ]]
 }
-
 
 
 ## Pull in all the required files that contain our code
+# Note: Zsh can use 'source' or the '.' command interchangeably
 source ~/terminal-ext/functions.sh
 source ~/terminal-ext/prompt.sh
 source ~/terminal-ext/flutter.sh

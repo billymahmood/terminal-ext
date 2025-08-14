@@ -8,20 +8,13 @@ This is a collection of helper functions for Zsh designed to streamline common w
 
 To use these functions, it's best to keep them in a separate file for better organization.
 
-1.  **Create a file**: Create a new file in your home directory to store all the functions.
-    ```zsh
-    touch ~/.custom_functions.zsh
-    ```
-
-2.  **Combine Functions**: Copy and paste **all** the function scripts (Git, Docker, Flutter, and Terminal) into this new `~/.custom_functions.zsh` file.
-
-3.  **Source the File**: Add the following line to the **end** of your `~/.zshrc` file. This tells Zsh to load your custom functions every time you open a new terminal.
+1.  **Source the File**: Add the following line to the **end** of your `~/.zshrc` file. This tells Zsh to load your custom functions every time you open a new terminal.
     ```zsh
     # Load custom helper functions
-    source ~/.custom_functions.zsh
+    source ~/terminal-ext/billy.sh
     ```
 
-4.  **Reload Your Shell**: To apply the changes, either close and reopen your terminal or run the command:
+2.  **Reload Your Shell**: To apply the changes, either close and reopen your terminal or run the command:
     ```zsh
     source ~/.zshrc
     ```
